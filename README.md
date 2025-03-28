@@ -137,6 +137,7 @@ allocator_type const_local_iterator local_iterator
 |capacity | Returns the number of elements that the container could contain without allocating more storage.|
 |destroy_container | Empty the container and release all resources, including the hash table.|
 |shrink_to_fit | Discard excess capacity. Do not reduce bucket_count.|
+|nops | An unsigned integral value initialized to -1 that indicates "not found" when a search function fails.|
 |_index_emplace | Adds an element constructed in place.|
 |_index_erase | Removes elements at specified positions.|
 |_index_find | Finds an element that matches a specified key.|
@@ -194,7 +195,7 @@ The container to copy.
 如果AutoRehash為false，則必須在建構函式中明確提供初始桶數量。初始桶數量可以為0，前提是在呼叫任何插入/搜尋/移除函式之前，必須明確呼叫rehash提供大於0的桶數。  
 If `AutoRehash` is false, you must specify the initial number of buckets in the constructor. The number of buckets can be set to 0, but before calling any insert, search, or erase functions, `rehash` must be explicitly called with a non-zero bucket count.
 
-## rehash
+## `rehash`
 Rebuilds the hash table.
 ```C++
 void rehash(size_type nbuckets);
@@ -208,7 +209,7 @@ If `AutoRehash` is true, the member function alters the number of buckets to be 
 If `AutoRehash` is false, the function sets the number of buckets to exactly `nbuckets` and rebuilds the hash table.  
 If `AutoRehash` is false and `nbuckets` is 0, the member function will destroy the hash table.
 
-## reserve
+## `reserve`
 Reserve enough space  to contain at least *n* elements without causing reference invalidation or rehashing.
 ```C++
 void reserve(size_type n);
@@ -220,7 +221,7 @@ The minimum length of storage to be allocated for the container.
 ### Remarks
 If `AutoRehash` is true, this function will also adjust the number of buckets to an appropriate value that can contain at least `n` elements and rebuild the hash table if necessary.
 
-## destroy_container
+## `destroy_container`
 Empty the container and release all resources, including the hash table.
 ```C++
 void destroy_container() noexcept;
@@ -228,6 +229,18 @@ void destroy_container() noexcept;
 ### Remarks
 After calling this function, any attempt to insert, search, or remove elements results in undefined behavior.   
 If `AutoRehash` is true, you can call the insert function afterward, and the hash table will be automatically rebuilt.
+
+## `_index_find`
+Finds an element that matches a specified key.
+```C++
+index _index_find(const key_type& keyval)
+```
+### Parameters
+`keyval`  
+Key value to search for.
+
+### Return value
+An index that refers to the location of an element with a specified key, or `npos` if no match is found for the key.
 
 
 其餘未詳細說明的函數請參考C++標準。  
